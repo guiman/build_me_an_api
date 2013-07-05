@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+#$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
+require 'json'
+require 'build_me_an_api'
+
+begin
+  raise Exception.new "Usage: build_me_an_api api_name dsn resource_specifier_file" unless ARGV.count == 3
+
+  options = {}
+
+  # retrieving params from arguments
+  options[:name] = ARGV[0]
+  options[:dsn] = ARGV[1]
+  options[:resources] = ARGV[2]
+
+  # verify app name availability
+  raise Exception.new "The directory '#{options[:name]}' where the api will be already exists. Please choose another name." if Dir.exists? options[:name]
+
+  # verify resource descriptor
+  raise Exception.new "The resource descriptor file '#{options[:resource]}' doesn't exists." unless File.exists? options[:resources]
+
+  # BUILD ME THE API!!
+  BuildMeAnApi::Builder.new(options).write
+
+rescue Exception => e
+  if e.instance_of?(SystemExit)
+    raise
+  else
+    puts e.message
+  end
+end
