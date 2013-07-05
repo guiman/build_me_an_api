@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = BuildMeAnApi::VERSION
   spec.authors       = ["Álvaro F. Lara"]
   spec.email         = ["alvarola@gmail.com"]
-  spec.description   = "A tool to build json apis easyly and with no pain."
+  spec.description   = "A tool that allows you to build an API very easy, giving you a working API template that you can later modify to your needs."
   spec.summary       = "A tool to build json apis easyly and with no pain."
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/guiman/build_me_an_api"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_dependency "json"
 end

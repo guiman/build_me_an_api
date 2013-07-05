@@ -10,7 +10,6 @@ module BuildMeAnApi
       Dir.mkdir File.join('.', @api_name)
       Dir.mkdir File.join('.', @api_name, 'config')
       Dir.mkdir File.join('.', @api_name, 'model')
-      Dir.mkdir File.join('.', @api_name, 'resources')
     end
     
     def write_template_gemfile
@@ -80,8 +79,9 @@ module BuildMeAnApi
     #{model.classname}.create(params[:#{model.name}]).to_json
   end\n
   post '/#{model.name}/:#{model.pk}' do
-    #{model.classname}.update(params[:#{model.name}])
-    #{model.classname}.get(params[:#{model.pk}]).to_json
+    object = #{model.classname}.get(params[:#{model.pk}])
+    object.update(params[:#{model.name}])
+    object.to_json
   end\n"
       end
 
@@ -93,7 +93,7 @@ module BuildMeAnApi
       # First we create the directories
       create_directories
 
-      # Now we write easy files
+      # Then we write easy files
       ## Gemfile
       write_template_gemfile
 
@@ -106,7 +106,7 @@ module BuildMeAnApi
       # Now it's time for the fun stuff: Models
       write_models
       
-      # this file contains the API < Sinatra::Base class
+      # Finally the file that contains the API < Sinatra::Base class
       write_main_api_file
     end
   end
