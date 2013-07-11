@@ -108,7 +108,6 @@ Well if you are not very happy with what it cames bundled with, you can always m
 
 * Related resources
 * Being able to create your own api templates
-* Tons of tests...
 
 ## Contributing
 
