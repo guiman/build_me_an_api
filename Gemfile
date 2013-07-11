@@ -6,5 +6,6 @@ gemspec
 group :test do
   gem 'minitest', require: ['minitest/autorun']
   gem 'data_mapper'
+  gem 'rake'
   gem 'dm-sqlite-adapter'
 end
