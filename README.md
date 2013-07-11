@@ -1,4 +1,6 @@
 # BuildMeAnApi
+[![Build Status](https://travis-ci.org/guiman/build_me_an_api.png)](https://travis-ci.org/guiman/build_me_an_api)
+[![Code Climate](https://codeclimate.com/github/guiman/build_me_an_api.png)](https://codeclimate.com/github/guiman/build_me_an_api)
 
 A tool that allows you to build an API very easy, giving you a working API template that you can later modify to your needs.
 
