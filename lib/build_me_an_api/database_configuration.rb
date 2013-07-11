@@ -1,6 +1,9 @@
 module BuildMeAnApi
   class DatabaseConfiguration
+
+    # accessors
     attr_reader :dsn
+
     def initialize(dsn)
       @dsn = dsn
     end

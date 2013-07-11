@@ -45,7 +45,7 @@ module BuildMeAnApi
     end
     
     def write_models
-      @resource_descriptor.models.each { |model| model.write_file File.join('.', @api_name) }
+      @resource_descriptor.models.each { |model| model.write_file File.join('.', @api_name, 'model') }
     end
     
     def write_main_api_file
@@ -63,6 +63,7 @@ module BuildMeAnApi
       api_file << "  DataMapper.auto_upgrade!\n"
       api_file << "end\n\n"
       api_file << "class App < Sinatra::Base\n"
+      api_file >> "  enable :method_override"
       api_file << "  before do\n"
       api_file << "    content_type 'application/json'\n"
       api_file << "  end\n"
@@ -78,9 +79,19 @@ module BuildMeAnApi
   post '/#{model.name}' do
     #{model.classname}.create(params[:#{model.name}]).to_json
   end\n
-  post '/#{model.name}/:#{model.pk}' do
+  put '/#{model.name}/:#{model.pk}' do
     object = #{model.classname}.get(params[:#{model.pk}])
     object.update(params[:#{model.name}])
+    object.to_json
+  end\n
+  patch '/#{model.name}/:#{model.pk}' do
+    object = #{model.classname}.get(params[:#{model.pk}])
+    object.update(params[:#{model.name}])
+    object.to_json
+  end\n
+  delete '/#{model.name}/:#{model.pk}' do
+    object = #{model.classname}.get(params[:#{model.pk}])
+    object.delete
     object.to_json
   end\n"
       end

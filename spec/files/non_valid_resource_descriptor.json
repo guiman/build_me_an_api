@@ -1,0 +1,12 @@
+{
+  "resources":
+  {
+    "name": "basic_model",
+    "attributes":
+    {
+      "id": "integer",
+      "name": "string",
+      "pk": "id"
+    }
+  }
+}
