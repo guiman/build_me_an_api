@@ -11,16 +11,13 @@ module BuildMeAnApi
 
       unless @resources_raw_data["resources"] && @resources_raw_data["resources"].instance_of?(Array)
         @resources_raw_data = nil
-
         raise BuildMeAnApi::MalformedResourceDescriptor.new
       end
     end
 
     def parse
       load
-
       @models = @resources_raw_data["resources"].inject([]) { |col, raw_model| col << Model.new(raw_model) }
-
       self
     end
   end

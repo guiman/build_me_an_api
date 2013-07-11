@@ -3,6 +3,7 @@ module BuildMeAnApi
     attr_reader :pk, :name, :attributes
     def initialize(raw_model)
       raise BuildMeAnApi::MalformedModel.new(raw_model) unless raw_model["name"] && raw_model["attributes"] && raw_model["attributes"]["pk"]
+
       @pk = raw_model["attributes"].delete("pk")
       @name = raw_model["name"]
       @attributes = raw_model["attributes"]

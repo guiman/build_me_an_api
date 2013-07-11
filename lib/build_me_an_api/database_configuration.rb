@@ -5,6 +5,7 @@ module BuildMeAnApi
     attr_reader :dsn
 
     def initialize(dsn)
+      raise BuildMeAnApi::MalformedDatabaseDSN.new(dsn) unless dsn =~ /(sqlite|mysql|postgres):/
       @dsn = dsn
     end
     
