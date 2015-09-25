@@ -4,24 +4,24 @@ describe BuildMeAnApi::Model do
   let :raw_model do
     { "name" => "test_model", "attributes" => { "pk" => "id", "attr_str" => "string", "attr_nro" => "integer", "id" => "integer" } }
   end
-  
+
   let :model do
     BuildMeAnApi::Model.new(raw_model)
   end
-  
+
   it "throw an error with malfored data" do
-    Proc.new { BuildMeAnApi::Model.new({}) }.must_raise BuildMeAnApi::MalformedModel
-    Proc.new { BuildMeAnApi::Model.new({ "name" => "test_model" }) }.must_raise BuildMeAnApi::MalformedModel
-    Proc.new { BuildMeAnApi::Model.new({ "pk" => "id" }) }.must_raise BuildMeAnApi::MalformedModel
-    Proc.new { BuildMeAnApi::Model.new({ "attributes" => "" }) }.must_raise BuildMeAnApi::MalformedModel
+    expect { BuildMeAnApi::Model.new({}) }.to raise_error(BuildMeAnApi::MalformedModel)
+    expect { BuildMeAnApi::Model.new({ "name" => "test_model" }) }.to raise_error(BuildMeAnApi::MalformedModel)
+    expect { BuildMeAnApi::Model.new({ "pk" => "id" }) }.to raise_error(BuildMeAnApi::MalformedModel)
+    expect { BuildMeAnApi::Model.new({ "attributes" => "" }) }.to raise_error(BuildMeAnApi::MalformedModel)
   end
 
   it "must retrieve available attributes" do
     expected_attributes = { "attr_str" => "string", "attr_nro" => "integer", "id" => "integer" }
 
-    model.attributes.must_equal expected_attributes
-    model.pk.must_equal "id"
-    model.name.must_equal "test_model"
+    expect(model.attributes).to eq expected_attributes
+    expect(model.pk).to eq "id"
+    expect(model.name).to eq "test_model"
   end
 
   it "must write a complete valid ruby class file" do
@@ -29,10 +29,10 @@ describe BuildMeAnApi::Model do
 
     model.write_file base_file_path
 
-    File.exist?(File.join(base_file_path, 'test_model.rb')).must_equal true
+    expect(File.exist?(File.join(base_file_path, 'test_model.rb'))).to eq true
 
     # Test if it's valid ruby class
-    Proc.new do
+    valid_ruby_class = Proc.new do
       begin
         require 'data_mapper'
         require 'dm-sqlite-adapter'
@@ -42,23 +42,26 @@ describe BuildMeAnApi::Model do
         DataMapper.auto_migrate!
 
         test_model_instance = TestModel.new(attr_nro: 10, attr_str: "this is a string")
-        test_model_instance.attr_nro.must_equal 10
-        test_model_instance.attr_str.must_equal "this is a string"
-        test_model_instance.id.must_be_nil
+        expect(test_model_instance.attr_nro).to eq 10
+        expect(test_model_instance.attr_str).to eq "this is a string"
+        expect(test_model_instance.id).to be_nil
 
         test_model_instance.save
-        test_model_instance.id.wont_be_nil
+        expect(test_model_instance.id).not_to be_nil
 
         true
-      rescue Exception => e
+      rescue Exception
         false
       end
-    end.call.must_equal true
+    end.call
+
+    expect(valid_ruby_class).to eq true
 
     File.delete(File.join(base_file_path, 'test_model.rb'))
+    File.delete('memory:')
   end
-  
+
   it "must be able to construct the class name" do
-    model.classname.must_equal "TestModel"
+    expect(model.classname).to eq "TestModel"
   end
 end
